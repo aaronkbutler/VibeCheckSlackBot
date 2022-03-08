@@ -28,6 +28,7 @@ async function sendMessages(phoneNumbers, jsonData) {
 }
 
 app.message(async ({ message, say }) => {
+  console.log(message);
   //console.log(message);
   if(message.channel !== channelIds.badVibez) {
     var axios = require("axios").default;
