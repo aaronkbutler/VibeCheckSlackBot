@@ -28,7 +28,6 @@ async function sendMessages(phoneNumbers, jsonData) {
 }
 
 app.message(async ({ message, say }) => {
-  console.log(message);
   //console.log(message);
   if(message.channel !== channelIds.badVibez) {
     var axios = require("axios").default;
@@ -54,7 +53,12 @@ app.message(async ({ message, say }) => {
             //await say(`<@${message.user}>, watch it with those bad vibez.`);
 
             if(message.channel == channelIds.goodVibez) {
-              await app.client.chat.postMessage({ token: process.env.SLACK_BOT_TOKEN, channel: channelIds.badVibez, text: "From good vibez:\n" + options.params.text});
+              const members = await app.client.conversations.members({ token: process.env.SLACK_BOT_TOKEN, channel: channelIds.badVibez });
+              if(members.members.includes(message.user)) {
+                 await app.client.chat.postMessage({ token: process.env.SLACK_BOT_TOKEN, channel: channelIds.badVibez, text: `From #good_vibez:\n<@${message.user}>: ` + options.params.text});
+              } else {
+                 await app.client.chat.postMessage({ token: process.env.SLACK_BOT_TOKEN, channel: channelIds.badVibez, text: `From #good_vibez:\n>: ` + options.params.text});
+              }
             }
 
           } else {
